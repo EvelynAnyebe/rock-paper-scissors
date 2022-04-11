@@ -128,10 +128,9 @@ class CyclePlayer(Player):
 
 
 class Game:
-    score = {1: 0, 2: 0}
-
     def __init__(self, p1=HumanPlayer("Player 1"),
                  p2=Player("Player 2")):
+        self.score = {1: 0, 2: 0}
         self.p1 = p1  # The human player
         self.p2 = p2  # The computer player
 
@@ -157,21 +156,21 @@ class Game:
         move1 = self.p1.move()
         move2 = self.p2.move()
         if(move1 != move2):
-            Game.score[1] += beats(move1, move2)
-            Game.score[2] += beats(move2, move1)
+            self.score[1] += beats(move1, move2)
+            self.score[2] += beats(move2, move1)
         print_wait(
             f"Move: {self.p1.name} - {move1},  {self.p2.name} - {move2}",
             1, color_type="info")
         print_wait(
-            f"Score: {self.p1.name} {Game.score[1]}, "
-            f"{self.p2.name} {Game.score[2]}\n\n", color_type="info")
+            f"Score: {self.p1.name} {self.score[1]}, "
+            f"{self.p2.name} {self.score[2]}\n\n", color_type="info")
         self.p1.learn(move1, move2)
         self.p2.learn(move2, move1)
 
     def play_game(self):
         play_again = 'y'
         while play_again == 'y':
-            Game.score = {1: 0, 2: 0}
+            self.score = {1: 0, 2: 0}
             print_wait("\n\nYou have 3 rounds.")
             print_wait("Game start in...")
             print_wait("1", 1)
@@ -181,9 +180,9 @@ class Game:
                 print_wait(f"Round {round}:", 1)
                 self.play_round()
 
-            if (Game.score[1] > Game.score[2]):
+            if (self.score[1] > self.score[2]):
                 print_wait(f"*** {self.p1.name}, you won!! ***", 1, "success")
-            elif (Game.score[1] < Game.score[2]):
+            elif (self.score[1] < self.score[2]):
                 print_wait(
                     f"**** {self.p1.name}, you have been defeated by "
                     f"{self.p2.name}. Your oponent!! ***", 1, "error")
@@ -191,8 +190,8 @@ class Game:
                 print_wait(f"Its a tie!!! There is no winner or loser.", 1)
 
             print_wait(
-                f"Score: {self.p1.name} {Game.score[1]}, "
-                f"{self.p2.name} {Game.score[2]}\n\n", 1, "info")
+                f"Score: {self.p1.name} {self.score[1]}, "
+                f"{self.p2.name} {self.score[2]}\n\n", 1, "info")
             play_again = valid_string_input("Play again? Y or N: ", "y,n")
 
         print_wait("Game over!", 1)
